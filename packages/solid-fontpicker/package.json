@@ -1,6 +1,6 @@
 {
   "name": "solid-fontpicker-ts",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A Google font picker component for SolidJS",
   "author": "Carlo Taleon",
   "contributors": [
