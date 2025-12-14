@@ -211,10 +211,14 @@ export default function FontPicker(props: FontPickerProps) {
         .trim()
         .split(",")
         .map((v: string) => v.trim().toLowerCase())
-      activeFontsInCategory = [...all.filter((a: Font) => newFontCategories.includes(a.category))]
+      activeFontsInCategory = [
+        ...activeFonts.filter((a: Font) => newFontCategories.includes(a.category)),
+      ]
     } else {
       const newFontCategories = fc.map((v) => v.toLowerCase())
-      activeFontsInCategory = [...all.filter((a: Font) => newFontCategories.includes(a.category))]
+      activeFontsInCategory = [
+        ...activeFonts.filter((a: Font) => newFontCategories.includes(a.category)),
+      ]
     }
     return activeFontsInCategory
   })
@@ -476,9 +480,13 @@ export default function FontPicker(props: FontPickerProps) {
 
           if (why === "opening" || fontTop <= popTop) {
             popout.scrollTop = fontTop
+            optionNode.classList.add("selected")
           } else if (fontBottom >= popBottom) {
             popout.scrollTop = fontBottom - popout.clientHeight - 1
           }
+
+          const optionRef = fontPickerOptionsRef.get(selectedFont.sane)
+          optionRef?.classList.add("selected")
         }
       }
     }
