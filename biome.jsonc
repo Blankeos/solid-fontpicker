@@ -28,6 +28,7 @@
         "noExplicitAny": "off",
         "noUnknownAtRules": "off",
         "noAssignInExpressions": "off",
+        "noDoubleEquals": "off",
       },
       "style": {
         "noNonNullAssertion": "off",
