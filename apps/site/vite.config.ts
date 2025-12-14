@@ -1,8 +1,9 @@
+import vike from "vike/plugin"
+import vikeSolid from "vike-solid/vite"
 import { defineConfig } from "vite"
-import solidPlugin from "vite-plugin-solid"
 
 export default defineConfig({
-  plugins: [solidPlugin()],
+  plugins: [vike(), vikeSolid()],
   server: {
     port: 3000,
   },

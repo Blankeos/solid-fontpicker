@@ -1,4 +1,5 @@
 import {
+  children,
   createEffect,
   createMemo,
   createSignal,
@@ -14,6 +15,7 @@ import fontInfos from "../../font-preview/fontInfo.json"
 import { checkLoaded } from "../lib/fontChecker"
 import { sanify } from "../lib/util"
 import "./FontPicker.css"
+import { isServer } from "solid-js/web"
 
 const FontPreviews = lazy(() => import("./FontPreviews"))
 
@@ -117,7 +119,7 @@ export default function FontPicker(props: FontPickerProps) {
       fontCategories: "all",
       localFonts: [],
       mode: "combo",
-      loading: <div>Font previews loading ...</div>,
+      // loading: <div>Font previews loading ...</div>,
     },
     props
   )
@@ -625,10 +627,17 @@ export default function FontPicker(props: FontPickerProps) {
     return `fontpicker__preview font-preview-${current().sane}`
   }
 
+  const resolvedLoading = children(() => {
+    if (isServer) return <>Font previews is loading...</> // Not showing properly, but fixes the weird issue on ssr
+
+    return local.loading
+    // return typeof local.loading === "function" ? local.loading() : local.loading
+  })
+
   return (
     <Show when={!local.loaderOnly}>
       <div class={outerClasses()} {...rest}>
-        <Suspense fallback={local.loading}>
+        <Suspense fallback={resolvedLoading()}>
           <FontPreviews />
           <Show
             when={local.mode === "list"}

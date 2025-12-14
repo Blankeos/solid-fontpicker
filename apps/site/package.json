@@ -3,15 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
+    "dev": "bunx --bun vike dev",
+    "build": "bunx --bun vike build",
     "lint": "biome check .",
     "lint:fix": "biome check --write ."
   },
   "dependencies": {
+    "solid-fontpicker-ts": "workspace:*",
     "solid-js": "^1.9.5",
-    "solid-fontpicker-ts": "workspace:*"
+    "vike": "^0.4.247",
+    "vike-solid": "^0.7.13"
   },
   "devDependencies": {
     "typescript": "^5.7.3",

@@ -19,10 +19,10 @@ const preset_options: preset.PresetOptions = {
 }
 
 const CI =
-  process.env["CI"] === "true" ||
-  process.env["GITHUB_ACTIONS"] === "true" ||
-  process.env["CI"] === '"1"' ||
-  process.env["GITHUB_ACTIONS"] === '"1"'
+  process.env.CI === "true" ||
+  process.env.GITHUB_ACTIONS === "true" ||
+  process.env.CI === '"1"' ||
+  process.env.GITHUB_ACTIONS === '"1"'
 
 export default defineConfig((config) => {
   const watching = !!config.watch
@@ -31,6 +31,32 @@ export default defineConfig((config) => {
 
   if (!watching && !CI) {
     const package_fields = preset.generatePackageExports(parsed_options)
+
+    // restructure exports to contain root export under "."
+    if (package_fields.exports && !package_fields.exports["."]) {
+      const rootExport: any = {}
+      const additionalExports: any = {}
+      for (const key in package_fields.exports) {
+        if (key.startsWith("./")) {
+          additionalExports[key] = package_fields.exports[key]
+        } else {
+          rootExport[key] = package_fields.exports[key]
+        }
+      }
+      // preserve additional exports like "./css" and "./style"
+      package_fields.exports = {
+        ".": rootExport,
+        ...additionalExports,
+      }
+    }
+
+    // manually inject css/style exports
+    if (!package_fields.exports["./css"]) {
+      package_fields.exports["./css"] = "./dist/index.css"
+    }
+    if (!package_fields.exports["./style"]) {
+      package_fields.exports["./style"] = "./dist/index.css"
+    }
 
     console.log(`package.json: \n\n${JSON.stringify(package_fields, null, 2)}\n\n`)
 
